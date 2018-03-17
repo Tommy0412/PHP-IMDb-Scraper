@@ -1,0 +1,88 @@
+<html>
+<head>
+<style>
+ table.info { width:100%; margin-bottom:20px; }
+ table.info th { white-space:nowrap; text-align:left; vertical-align:top; color:green; }
+ table.info p { display:inline-block; margin:0; padding:0; } 
+</style> 
+</head>
+<body>
+<table class="info">
+<tr><th>IMDb:</th><td><a href="#" id="imdburlOutput"> link</a></td></tr>
+<tr><th>NAZIV:</th><td><p id="title"></p></td></tr> 
+<tr><th>ORIGINALNI NAZIV:</th><td><p id="original_title"></p></td></tr>
+<tr><th>GODINA:</th><td><p id="year"></p></td></tr>
+<tr><th>TRAJANJE:</th><td><p id="runtime"></p></div> Minuta</td></tr>
+<tr><th>ŽANR:</th><td><p id="genres"></p></td></tr>
+<tr><th>IMDB OCJENA:</th><td><p id="rating"></p></td></tr> 
+<tr><th>BROJ GLASOVA:</th><td><p id="votes"></p></td></tr>
+<tr><th>JEZIK:</th><td><p id="language"></p></td></tr>
+<tr><th>DRŽAVA:</th><td><p id="country"></p></td></tr>
+<tr><th>REŽIJA:</th><td><p id="directors"></p></td></tr>
+<tr><th>SCENARIO:</th><td><p id="writers"></p></td></tr>
+<tr><th>GLAVNI GLUMCI:</th><td><p id="stars"></p></td></tr> 
+<tr><th>RADNJA:</th><td><p id="plot"></p></td></tr> 
+</table>
+<script>
+
+ var movieRequest = new XMLHttpRequest();
+ movieRequest.open(
+ "GET",
+ //search by name
+ "https://tommy0412.github.io/PHP-IMDb-Scraper/imdbWebService.php?m=Frost (2017)"
+ //search by imdb id
+ //"https://tommy0412.github.io/PHP-IMDb-Scraper/imdbWebService.php?m=tt1137450"
+ //search by imdb url
+ //"https://tommy0412.github.io/PHP-IMDb-Scraper/imdbWebService.php?m=www.imdb.com/title/tt1137450"
+ );
+
+ movieRequest.onload = function() {
+
+ var movies = JSON.parse(movieRequest.responseText);
+
+ var genres = movies.GENRES || "";
+ var genres_list = genres.toString().replace(/,/g,", ");
+
+ var directors = Object.values(movies.DIRECTORS) || "";
+ var directors_list = directors.toString().replace(/,/g,", ");
+
+ var writers = Object.values(movies.WRITERS) || "";
+ var writers_list = writers.toString().replace(/,/g,", ");
+
+ var stars = Object.values(movies.STARS) || "";
+ var stars_list = stars.toString().replace(/,/g,", ");
+
+ var cast = Object.values(movies.CAST) || "";
+ var cast_list = cast.toString().replace(/,/g,", ");
+
+ var language = Object.values(movies.LANGUAGE) || "";
+ var language_list = language.toString().replace(/,/g,", "); 
+
+ var country = Object.values(movies.COUNTRY) || "";
+ var country_list = country.toString().replace(/,/g,", ");
+ 
+// outputing data
+ document.getElementById("original_title") && (document.getElementById("original_title").innerHTML = movies.ORIGINAL_TITLE || "");
+ document.getElementById("title") && (document.getElementById("title").innerHTML = movies.TITLE || "");
+ document.getElementById("year") && (document.getElementById("year").innerHTML = movies.YEAR || "");
+ document.getElementById("rating") && (document.getElementById("rating").innerHTML = movies.RATING || "");
+ document.getElementById("votes") && (document.getElementById("votes").innerHTML = movies.VOTES || "");
+ document.getElementById("language") && (document.getElementById("language").innerHTML = language_list);
+ document.getElementById("country") && (document.getElementById("country").innerHTML = country_list); 
+ document.getElementById("plot") && (document.getElementById("plot").innerHTML = movies.PLOT || "");
+ document.getElementById("runtime") && (document.getElementById("runtime").innerHTML = movies.RUNTIME || "");
+ document.getElementById("genres") && (document.getElementById("genres").innerHTML = genres_list);
+ document.getElementById("directors") && (document.getElementById("directors").innerHTML = directors_list);
+ document.getElementById("writers") && (document.getElementById("writers").innerHTML = writers_list);
+ document.getElementById("stars") && (document.getElementById("stars").innerHTML = stars_list);
+ document.getElementById("cast") && (document.getElementById("cast").innerHTML = cast_list); 
+ 
+ document.getElementById("imdburlOutput") && (document.getElementById("imdburlOutput").setAttribute("href", movies.IMDB_URL || ""));
+
+ };
+
+ movieRequest.send();
+
+</script> 
+</body>
+</html>
