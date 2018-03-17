@@ -15,7 +15,7 @@ include("imdb.php");
 $movieName = $_REQUEST["m"];
 $output = strtolower($_REQUEST["o"]);
 if($output != "xml" && $output != "json" && $output != "jsonp"){
-	$output = "xml"; //Set default to XML
+	$output = "json"; //Set default to XML
 }
 
 $i = new Imdb();
