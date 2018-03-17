@@ -26,7 +26,7 @@ class Imdb
 	}
 	
 	// Get movie information by IMDb Id.
-	public function getMovieInfoById($imdbId, $getExtraInfo = true)
+	public function getMovieInfoById($imdbId, $getExtraInfo = false)
 	{
 		$arr = array();
 		$imdbUrl = "http://www.imdb.com/title/" . trim($imdbId) . "/";
@@ -34,7 +34,7 @@ class Imdb
 	}
 	
 	// Scrape movie information from IMDb page and return results in an array.
-	private function scrapeMovieInfo($imdbUrl, $getExtraInfo = true)
+	private function scrapeMovieInfo($imdbUrl, $getExtraInfo = false)
 	{
 		$arr = array();
 		$html = $this->geturl("${imdbUrl}reference");
@@ -177,7 +177,7 @@ class Imdb
 			case FALSE:     return NULL;
 			default:        return NULL;
 		}
-		$url = "http://www.${engine}.com/search?q=imdb+" . rawurlencode($title);
+		$url = "http://www.${engine}.com/search?q=site:imdb.com+" . rawurlencode($title);
 		$ids = $this->match_all('/<a.*?href="http:\/\/www.imdb.com\/title\/(tt\d+).*?".*?>.*?<\/a>/ms', $this->geturl($url), 1);
 		if (!isset($ids[0]) || empty($ids[0])) //if search failed
 			return $this->getIMDbIdFromSearch($title, $nextEngine); //move to next search engine
